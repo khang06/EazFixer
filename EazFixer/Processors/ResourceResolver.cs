@@ -31,7 +31,7 @@ namespace EazFixer.Processors
             mi.Invoke(null, new object[0]);
 
             //get the dictionary we just initialized
-            FieldInfo dictionaryField = mi.DeclaringType.GetFields(BindingFlags.Static | BindingFlags.NonPublic).Single(a => a.FieldType != typeof(Assembly));
+            FieldInfo dictionaryField = mi.DeclaringType.GetFields(BindingFlags.Static | BindingFlags.NonPublic).First(a => a.FieldType != typeof(Assembly));
             object dictionaryValue = dictionaryField.GetValue(null);
             if (dictionaryValue.GetType().Name != "Dictionary`2") Debug.Fail("not a dictionary");
             var dictionary = (IDictionary)dictionaryValue;
@@ -75,12 +75,13 @@ namespace EazFixer.Processors
 
         private static bool CanBeResourceResolver(TypeDef t)
         {
-            if (t.Fields.Count != 2) return false;
+            if (t.Fields.Count != (Flags.Modern ? 3 : 2)) return false;
             if (t.NestedTypes.Count != 1) return false;
 
             foreach (MethodDef m in t.Methods.Where(a => a.HasBody && a.Body.HasInstructions)) {
                 //adds ResourceResolver
                 bool addsResolver = m.Body.Instructions.Any(i => i.OpCode.Code == Code.Callvirt && i.Operand is MemberRef mr && mr.Name == "add_ResourceResolve");
+                //Console.WriteLine("Resource resolver at {0}", t.Name);
                 if (addsResolver) return true;
             }
 

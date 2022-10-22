@@ -6,5 +6,6 @@ namespace EazFixer {
 
         public static bool   KeepTypes;
         public static bool   VirtFix;
+        public static bool   Modern;
     }
 }

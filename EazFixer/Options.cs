@@ -17,5 +17,8 @@ namespace EazFixer
 
         [Option("virt-fix")]
         public bool VirtFix { get; set; }
+
+        [Option("modern")]
+        public bool Modern { get; set; }
     }
 }

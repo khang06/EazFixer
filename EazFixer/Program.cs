@@ -93,6 +93,7 @@ namespace EazFixer
             Flags.InFile = args.InFile;
             Flags.KeepTypes = args.KeepTypes;
             Flags.VirtFix = args.VirtFix;
+            Flags.Modern = args.Modern;
 
             if (args.OutFile != default)
             {

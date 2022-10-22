@@ -98,8 +98,8 @@ namespace EazFixer.Processors
             }
 
             //remove types
-            if (_decompressor == null) //if it is present, more stuff is going on that I don't know about (better be safe)
-                Ctx.Module.Types.Remove(_assemblyResolver);
+            //if (_decompressor == null) //if it is present, more stuff is going on that I don't know about (better be safe)
+            //    Ctx.Module.Types.Remove(_assemblyResolver);
 
             //remove resources
             foreach (var assembly in _assemblies)
@@ -133,7 +133,8 @@ namespace EazFixer.Processors
         {
             var split = text.Split(',');
 
-            for (int i = 0; i < split.Length; i += 4)
+            // https://github.com/HoLLy-HaCKeR/EazFixer/issues/45
+            for (int i = Flags.Modern ? 1 : 0; i < split.Length; i += 4)
             {
                 string b64 = split[i];
                 string resName = split[i + 1];
